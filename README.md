@@ -1,6 +1,5 @@
-# tubes-sisparter
+# Tugas Besar Sistem Paralel dan Terdistribusi
 
-Tugas Besar Sistem Paralel dan Terdistribusi
 Topik : EXO
 
 Anggota Kelompok 6 :
