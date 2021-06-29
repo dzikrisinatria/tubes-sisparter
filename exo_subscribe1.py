@@ -29,10 +29,11 @@ broker_address = "broker.hivemq.com"
 
 # buat client baru
 print("Creating New Instance")
-client = mqtt.Client("P5")
+client = mqtt.Client("P3")
 
-client.message_callback_add("log_ripki", on_message)
-client.message_callback_add("ripki", on_message_bytes)
+# menambahkan callback
+client.message_callback_add("exo/log", on_message)
+client.message_callback_add("exo/photo", on_message_bytes)
 
 # kaitkan callback on_message ke client
 client.on_message=on_message
@@ -45,13 +46,13 @@ client.connect(broker_address, port=1883)
 client.loop_start()
 
 # print topik yang disubscribe (dalam konteks ini, "waktu")
-print("Subcribing to topic", "ripki")
+print("Subcribing to topic", "exo/photo")
 
 # loop forever
 while True:
     # client melakukan subscribe ke topik "waktu"
-    client.subscribe("log_ripki")
-    client.subscribe("ripki")
+    client.subscribe("exo/log")
+    client.subscribe("exo/photo")
 
     # berikan waktu tunggu 1 detik
     time.sleep(1) 
