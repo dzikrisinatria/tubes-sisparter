@@ -7,9 +7,7 @@ import time
 # import datetime untuk mendapatkan waktu dan tanggal
 from datetime import datetime
 
-## importing socket module
-import socket
-
+# import thread untuk memakai sistem threading parallel
 from threading import Thread
 
 from requests import get
@@ -23,25 +21,27 @@ def on_publish(client, userdata, result):
     pass
 ########################################
 
-def getIpPublisher():
+# fungsi untuk publish IP Publisher dengan topik "exo/log"
+def pubIpPublisher():
     ip_address = get('https://api.ipify.org').text
 
     now = datetime.now()
     date_time = now.strftime("%d %m %Y, %H:%M:%S")
+    # client melakukan publish data dengan topik "exo/log"
+    return client.publish("exo/log", "Publisher : "+str(ip_address)+" at "+date_time)
 
-    return client.publish("log_ripki", "Publisher : "+str(ip_address)+" at "+date_time)
-
+# fungsi untuk publish photo dengan topik "exo/photo"
 def exoPhoto():
     f = open("exo.jpg", "rb")
     fileContent = f.read()
     byteArr = bytearray(fileContent)
-    # client melakukan publish data dengan topik "waktu"
-    return client.publish("ripki", byteArr, 1)
+    # client melakukan publish data dengan topik "exo/photo"
+    return client.publish("exo/photo", byteArr, 1)
 
 # definisikan nama broker yang akan digunakan
 broker_address = "broker.hivemq.com"
 
-# buat client baru bernama P2
+# buat client baru bernama P1
 print("Creating New Instance")
 client = mqtt.Client("P1")
 
@@ -52,19 +52,20 @@ client.on_publish=on_publish
 print("Connecting to Broker")
 client.connect(broker_address, port=1883)
 
+# fungsi publish secara parallel
 def publishTopic():
-    Thread(target = getIpPublisher).start()
+    Thread(target = pubIpPublisher).start()
     Thread(target = exoPhoto).start()
 
 # mulai loop client
 client.loop_start()
 
-# lakukan 20x publish waktu dengan topik "waktu"
+# publish topic dengan loop
 for i in range (5):
     # sleep 1 detik
     time.sleep(1)
 
     publishTopic()
     
-#stop loop
+# stop loop
 client.loop_stop()
