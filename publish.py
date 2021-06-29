@@ -28,7 +28,7 @@ def pubIpPublisher():
     now = datetime.now()
     date_time = now.strftime("%d %m %Y, %H:%M:%S")
     # client melakukan publish data dengan topik "exo/log"
-    return client.publish("exo/log", "Publisher : "+str(ip_address)+" at "+date_time)
+    return client.publish("exo_log", "Publisher : "+str(ip_address)+" at "+date_time)
 
 # fungsi untuk publish photo dengan topik "exo/photo"
 def exoPhoto():
@@ -36,7 +36,7 @@ def exoPhoto():
     fileContent = f.read()
     byteArr = bytearray(fileContent)
     # client melakukan publish data dengan topik "exo/photo"
-    return client.publish("exo/photo", byteArr, 1)
+    return client.publish("exo_photo", byteArr, 1)
 
 # definisikan nama broker yang akan digunakan
 broker_address = "broker.hivemq.com"
