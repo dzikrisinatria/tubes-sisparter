@@ -32,8 +32,8 @@ print("Creating New Instance")
 client = mqtt.Client("P3")
 
 # menambahkan callback
-client.message_callback_add("exo/log", on_message)
-client.message_callback_add("exo/photo", on_message_bytes)
+client.message_callback_add("exo_log", on_message)
+client.message_callback_add("exo_photo", on_message_bytes)
 
 # kaitkan callback on_message ke client
 client.on_message=on_message
@@ -46,13 +46,13 @@ client.connect(broker_address, port=1883)
 client.loop_start()
 
 # print topik yang disubscribe (dalam konteks ini, "waktu")
-print("Subcribing to topic", "exo/photo")
+print("Subcribing to topic", "exo_photo")
 
 # loop forever
 while True:
     # client melakukan subscribe ke topik "waktu"
-    client.subscribe("exo/log")
-    client.subscribe("exo/photo")
+    client.subscribe("exo_log")
+    client.subscribe("exo_photo")
 
     # berikan waktu tunggu 1 detik
     time.sleep(1) 
